@@ -20,3 +20,9 @@ export const getData = () => {
         // data: params,
     })
 }
+export const getTableData = () => {
+    return axios.request({
+        url: '/data/getTableData',
+        method: 'Get',
+    })
+}

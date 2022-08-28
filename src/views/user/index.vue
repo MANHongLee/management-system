@@ -11,11 +11,11 @@
             >新增</el-button
           >
         </el-col>
-        <el-col :span="12" push="6">
+        <el-col :span="12" :push='6'>
           <el-input
             style="width: 180px"
             v-model="searchVal"
-            placeholder="请输入关键字"
+            placeholder="请输入姓名"
             clearable
             prefix-icon="el-icon-search"
             size="small"
@@ -24,6 +24,7 @@
             type="primary"
             size="small"
             style="background-color: #545c64; border-color: #545c64"
+            @click="Searched()"
             >查询</el-button
           >
         </el-col>
@@ -42,10 +43,14 @@
         <el-button type="primary" @click="submitInfo()">确 定</el-button>
       </div>
     </el-dialog>
-    <el-card style="margin-top: 20px" shadow="hover">
+    <el-card
+      style="margin-top: 20px"
+      shadow="hover"
+      :body-style="{ height: '500px' }"
+    >
       <el-row :gutter="20">
         <el-col :span="24">
-          <el-table :data="tableData" style="width: 100%" max-height="950">
+          <el-table :data="tableData" style="width: 100%" max-height="500">
             <el-table-column width="50" type="index"> </el-table-column>
             <el-table-column prop="name" label="姓名" width="130">
             </el-table-column>
@@ -82,6 +87,7 @@
 
 <script>
 import CommonForm from "../../components/CommonForm.vue";
+import { getTableData } from "../../api/data";
 
 export default {
   components: {
@@ -126,55 +132,52 @@ export default {
         date: "",
         address: "",
       },
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "19",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "19",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "19",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "19",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "19",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          age: "20",
-          sex: "男",
-          address: "上海市普陀区金沙江路 1518 弄",
-        },
-      ],
+      tableData: [],
     };
   },
+  computed: {},
   methods: {
+    // getTableList() {
+    //   getTableData().then((res) => {
+    //     // console.log(res);
+    //     const { status, data } = res;
+    //     // console.log(data);
+    //     // console.log(data.data.list);
+    //     if (status === 200) {
+    //       if (data.code === 200) {
+    //         this.tableData = data.data.list;
+    //       }
+    //     }
+    //   });
+    // },
+
+    
+    //通过姓名进行列表数据搜索
+    Searched() {
+      const inputData = this.searchVal;
+      // console.log(typeOf(input));
+      console.log(inputData);
+      if (inputData !== '') {
+        const searchTableData = this.tableData.filter(
+          (item) => item.name == inputData
+        );
+        console.log(searchTableData);
+        this.tableData = searchTableData;
+      } else {
+        getTableData().then((res) => {
+          const { status, data } = res;
+          // console.log(data);
+          // console.log(data.data.list);
+          if (status === 200) {
+            if (data.code === 200) {
+              this.tableData = data.data.list;
+            }
+          }
+        });
+      }
+    },
     delClick(item) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -235,6 +238,21 @@ export default {
         address: "",
       };
     },
+  },
+  mounted() {
+    // this.$options.methods.getTableList()
+    // console.log(this.$options.methods.getTableList());
+    getTableData().then((res) => {
+      // console.log(res);
+      const { status, data } = res;
+      // console.log(data);
+      // console.log(data.data.list);
+      if (status === 200) {
+        if (data.code === 200) {
+          this.tableData = data.data.list;
+        }
+      }
+    });
   },
 };
 </script>
