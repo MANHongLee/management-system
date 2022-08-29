@@ -19,6 +19,7 @@
             clearable
             prefix-icon="el-icon-search"
             size="small"
+            @change="Searched()"
           ></el-input>
           <el-button
             type="primary"
@@ -133,6 +134,7 @@ export default {
         address: "",
       },
       tableData: [],
+      tempTableData: [],
     };
   },
   computed: {},
@@ -158,22 +160,13 @@ export default {
       // console.log(typeOf(input));
       console.log(inputData);
       if (inputData !== '') {
-        const searchTableData = this.tableData.filter(
+        const searchTableData = this.tempTableData.filter(
           (item) => item.name == inputData
         );
         console.log(searchTableData);
         this.tableData = searchTableData;
       } else {
-        getTableData().then((res) => {
-          const { status, data } = res;
-          // console.log(data);
-          // console.log(data.data.list);
-          if (status === 200) {
-            if (data.code === 200) {
-              this.tableData = data.data.list;
-            }
-          }
-        });
+        this.tableData = this.tempTableData
       }
     },
     delClick(item) {
@@ -196,7 +189,7 @@ export default {
         });
     },
     handleClick(item) {
-      // console.log(item);
+      console.log(item);
       this.dialogVisible = true;
       this.currentName = "编辑用户";
       this.operateForm = {
@@ -242,6 +235,7 @@ export default {
   mounted() {
     // this.$options.methods.getTableList()
     // console.log(this.$options.methods.getTableList());
+    
     getTableData().then((res) => {
       // console.log(res);
       const { status, data } = res;
@@ -249,10 +243,13 @@ export default {
       // console.log(data.data.list);
       if (status === 200) {
         if (data.code === 200) {
-          this.tableData = data.data.list;
+          this.tempTableData = data.data.list;
+          this.tableData = this.tempTableData;
         }
       }
     });
+    
+    console.log(this.tableData);
   },
 };
 </script>

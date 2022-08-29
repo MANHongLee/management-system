@@ -1,6 +1,11 @@
 import Mock from 'mockjs';
 
-const list = [];
+let list = [];
+//根据随机数0/1 来给予性别
+function getSex() {
+    const num = Math.round(Math.random());
+    return num === 0 ? "男" : "女" ;
+}
 export default {
     getTableData: () => {
         // const data = {
@@ -17,8 +22,8 @@ export default {
                 Mock.mock({
                     date: Mock.Random.date(),
                     name: Mock.Random.cname(),
-                    age: Mock.Random.integer(18, 30),
-                    sex: "男",
+                    age: Mock.Random.integer(18, 30).toString(),
+                    sex: getSex(),
                     // address: Mock.Random.address(),
                     address: Mock.Random.county(true),
                 })

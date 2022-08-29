@@ -7,6 +7,11 @@
 <script>
 export default {
   name: "App",
+  created() {
+    if (this.$router.path !== "/home") {
+      this.$router.replace("/home");
+    }
+  },
 };
 </script>
 
@@ -20,7 +25,8 @@ export default {
     height: 100%;
   }
 } */
-html,body {
+html,
+body {
   height: 100%;
 }
 #app {
