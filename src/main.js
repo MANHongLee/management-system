@@ -18,6 +18,20 @@ Vue.config.productionTip = false;
 //由于axios不是一个插件，所以需要加入在Vue的原型中，并起了别名叫$http
 Vue.prototype.$http = http;
 
+//路由守卫 用于判断登陆
+router.beforeEach((to, from, next) => {
+  //防止页面刷新，导致token失效
+  store.commit('getToken')
+
+  const token = store.state.user.token;
+  //如果没有token,而且当前页不是登陆页,就让页面回到登陆页
+  if (!token && to.name !== 'login') {
+    next({ name: 'login',});
+  }else{
+    next();
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

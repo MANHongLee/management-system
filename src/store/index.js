@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tab from '../store/tab';
 import head from '../store/head';
+import user from '../store/user';
 
 //全局的注入Vuex
 Vue.use(Vuex);
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     modules: {
         tab,
         head,
+        user,
     }
 })

@@ -7,7 +7,7 @@ import axios from "../api/axios";
 //接口调用 , parmas为接口调用传入的参数
 export const getMenu = (params) => {
     return axios.request({
-        url: '/premission/getMenu',
+        url: '/data/getMenu',
         method: 'POST',
         data: params,
     })
